@@ -1,0 +1,22 @@
+#          # Monitoring
+#          mkdir ~/bbb-monitoring
+#          aws s3 cp s3://${BBBStackBucketStack}/docker-compose.yaml ~/bbb-monitoring/docker-compose.yaml
+#          aws s3 cp s3://${BBBStackBucketStack}/prometheus.yaml ~/bbb-monitoring/prometheus.yaml
+#          sed -i "s/example.com/conference.session.savvyreading.com/g" ~/bbb-monitoring/docker-compose.yaml
+#          sed -i "s/example.com/conference.session.savvyreading.com/g" ~/bbb-monitoring/prometheus.yaml
+#
+#          touch ~/bbb-monitoring/bbb_exporter_secrets.env
+#          echo "API_BASE_URL=$SERVER" >> ~/bbb-monitoring/bbb_exporter_secrets.env
+#          echo "API_SECRET=$SECRET" >> ~/bbb-monitoring/bbb_exporter_secrets.env
+#
+#          cd ~/bbb-monitoring
+#          docker-compose up -d
+#
+#          touch /etc/bigbluebutton/nginx/monitoring.nginx
+#          echo "# BigBlueButton monitoring" >> /etc/bigbluebutton/nginx/monitoring.nginx
+#          echo "location /monitoring/ {" >> /etc/bigbluebutton/nginx/monitoring.nginx
+#          echo "proxy_pass http://127.0.0.1:3001/;" >> /etc/bigbluebutton/nginx/monitoring.nginx
+#          echo "include proxy_params;" >> /etc/bigbluebutton/nginx/monitoring.nginx
+#          echo "}" >> /etc/bigbluebutton/nginx/monitoring.nginx
+#
+#          bbb-conf --restart

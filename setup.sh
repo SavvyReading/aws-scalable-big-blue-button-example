@@ -1,13 +1,13 @@
 #!/bin/bash
-# This is a simple bash script for the BBB Application Infrastructure deployment. 
+# This is a simple bash script for the BBB Application Infrastructure deployment.
 # It basically glues together the parts running in loose coupeling during the deployment and helps to speed things up which
-# otherwise would have to be noted down and put into the command line. 
+# otherwise would have to be noted down and put into the command line.
 # This can be migrated into real orchestration / automation toolsets if needed (e.g. Ansible, Puppet or Terraform)
 
 # created by David Surey - suredavi@amazon.de
 # Disclaimber: NOT FOR PRODUCTION USE - Only for demo and testing purposes
 
-ERROR_COUNT=0; 
+ERROR_COUNT=0;
 
 if [[ $# -lt 5 ]] ; then
     echo 'arguments missing, please provide at least email (-e), the aws profile string (-p), the domain name (-d), the deployment Stack Name (-s) and the hosted zone to be used (-h)'
@@ -42,30 +42,30 @@ echo "##################################################"
 echo "Validating AWS CloudFormation templates..."
 echo "##################################################"
 # Loop through the YAML templates in this repository
-for TEMPLATE in $(find . -name 'bbb-on-aws-*.template.yaml'); do 
+for TEMPLATE in $(find . -name 'bbb-on-aws-*.template.yaml'); do
 
     # Validate the template with CloudFormation
-    ERRORS=$(aws cloudformation validate-template --profile=$BBBPROFILE --template-body file://$TEMPLATE 2>&1 >/dev/null); 
-    if [ "$?" -gt "0" ]; then 
+    ERRORS=$(aws cloudformation validate-template --profile=$BBBPROFILE --template-body file://$TEMPLATE 2>&1 >/dev/null);
+    if [ "$?" -gt "0" ]; then
         ((ERROR_COUNT++));
         echo "[fail] $TEMPLATE: $ERRORS";
-    else 
+    else
         echo "[pass] $TEMPLATE";
-    fi; 
-    
-done; 
+    fi;
 
-# Error out if templates are not validate. 
-echo "$ERROR_COUNT template validation error(s)"; 
-if [ "$ERROR_COUNT" -gt 0 ]; 
-    then exit 1; 
+done;
+
+# Error out if templates are not validate.
+echo "$ERROR_COUNT template validation error(s)";
+if [ "$ERROR_COUNT" -gt 0 ];
+    then exit 1;
 fi
 
 echo "##################################################"
 echo "Validating of AWS CloudFormation templates finished"
 echo "##################################################"
 
-# Deploy the Needed Buckets for the later build 
+# Deploy the Needed Buckets for the later build
 echo "deploy the Prerequisites of the BBB Environment and Application if needed"
 echo "##################################################"
 BBBPREPSTACK="${BBBSTACK}-Sources"
@@ -79,7 +79,7 @@ SOURCE=`aws cloudformation describe-stacks --profile=$BBBPROFILE --query "Stacks
 SOURCE=`echo "${SOURCE//\"}"`
 
 # we will upload the needed CFN Templates to S3 containing the IaaC Code which deploys the actual infrastructure.
-# This will error out if the source files are missing. 
+# This will error out if the source files are missing.
 echo "##################################################"
 echo "Copy Files to the S3 Bucket for further usage"
 echo "##################################################"
@@ -89,6 +89,7 @@ then
     echo "copy BBB code source file"
     aws s3 sync --profile=$BBBPROFILE --exclude=".DS_Store" ./templates s3://$SOURCE
     aws s3 sync --profile=$BBBPROFILE --exclude=".DS_Store" ./scripts s3://$SOURCE
+    aws s3 sync --profile=$BBBPROFILE --exclude=".DS_Store" ./savvy_settings s3://$SOURCE
     echo "##################################################"
 else
     echo "BBB code source file missing"
@@ -104,7 +105,7 @@ PARAMETERS=" BBBOperatorEMail=$OPERATOREMAIL \
              BBBDomainName=$DOMAIN \
              BBBHostedZone=$HOSTEDZONE"
 
-# Deploy the BBB infrastructure. 
+# Deploy the BBB infrastructure.
 echo "Building the BBB Environment"
 echo "##################################################"
 aws cloudformation deploy --profile=$BBBPROFILE --stack-name $BBBSTACK \
@@ -116,4 +117,4 @@ aws cloudformation deploy --profile=$BBBPROFILE --stack-name $BBBSTACK \
 echo "##################################################"
 echo "Deployment finished"
 
-exit 0 
+exit 0
