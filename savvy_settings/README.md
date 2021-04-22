@@ -1,3 +1,4 @@
+Changes made to following settinsg files 
 
 ## Settings.yml
 `/usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml`
