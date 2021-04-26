@@ -16,9 +16,9 @@ Parameters:
     AllowedValues:
       - bionic-18.04
       - focal-20.04
-  BBBApplicationInstanceOSVersion: 
-    Description: Ubuntu Version to be deployed for Application Instances 
-    Default: xenial-16.04
+  BBBApplicationInstanceOSVersion:
+    Description: Ubuntu Version to be deployed for Application Instances
+    Default: bionic-18.04
     Type: String
     AllowedValues:
       - xenial-16.04
@@ -97,7 +97,7 @@ Resources:
     Properties:
       ServiceToken: !Sub ${BBBGetLatestAMI.Arn}
       Owner: "099720109477"
-      Name: !Sub "ubuntu/images/hvm-ssd/ubuntu-${BBBApplicationInstanceOSVersion}-amd64-server*"
+      Name: !Sub "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server*"
       Architecture: "x86_64"
 
   BBBTurnAmiID:

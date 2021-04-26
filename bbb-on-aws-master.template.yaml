@@ -37,9 +37,9 @@ Parameters:
     Description: Version of the Big Blue Button Application
     Type: String
     Default: xenial-22
-  BBBApplicationInstanceOSVersion: 
-    Description: Ubuntu Version to be deployed for Application Instances 
-    Default: xenial-16.04
+  BBBApplicationInstanceOSVersion:
+    Description: Ubuntu Version to be deployed for Application Instances
+    Default: bionic-18.04
     Type: String
     AllowedValues:
       - xenial-16.04
