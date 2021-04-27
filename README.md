@@ -359,3 +359,5 @@ Please be aware of the deviating licenses of the deployed open-source software c
 - cfn-certificate-provider - [Apache-2.0 License](https://github.com/binxio/cfn-certificate-provider/blob/master/LICENSE)
 
 Please note that running this code will cause software that is licensed under [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.de.html) to be deployed in the user’s account.
+
+./setup.sh -p default -e jeremy.parra@savvyreading.com -h Z01840293X2GCUQLO34H -s bbb-stack -d session.savvyreading.com

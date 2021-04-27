@@ -89,6 +89,7 @@ then
     echo "copy BBB code source file"
     aws s3 sync --profile=$BBBPROFILE --exclude=".DS_Store" ./templates s3://$SOURCE
     aws s3 sync --profile=$BBBPROFILE --exclude=".DS_Store" ./scripts s3://$SOURCE
+    aws s3 sync --profile=$BBBPROFILE --exclude=".DS_Store" ./savvy_settings s3://$SOURCE
     echo "##################################################"
 else
     echo "BBB code source file missing"
