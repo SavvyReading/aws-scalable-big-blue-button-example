@@ -1,11 +1,23 @@
 ## Setup Turn Server
+1. `wget -qO- https://ubuntu.bigbluebutton.org/bbb-install.sh | bash -s -- -c turn.savvyreading.com:<stun scecret> -e jeremy.parra@savvyreading.com`
 
 ## Setup of BBB 2.2 on main Server  
 1. `sudo -i`
 2. `wget -qO- https://ubuntu.bigbluebutton.org/bbb-install.sh | bash -s -- -v xenial-22 -s lms.savvyreading.com -e jeremy.parra@savvyreading.com -g -c turn.savvyreading.com: <turn_secret>`
+### Chnages made `/etc/bigbluebutton/bbb-conf/apply-config.sh`
+```
+enableMultipleKurentos
+# disableMultipleKurentos
+```
 
 ### Changes made `/usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml`
+```
 copyright: "©2021 Savvy Education Inc."
+```
+
+```
+skipVideoPreview: false
+```
 
 ```
 - id: standard
