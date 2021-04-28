@@ -1,6 +1,6 @@
 ## Setup of BBB 2.2 on main Server  
 1. `sudo -i`
-2. `wget -qO- https://ubuntu.bigbluebutton.org/bbb-install.sh | bash -s -- -v xenial-22 -s lms.savvyreading.com -e jeremy.parra@savvyreading.com -g -c turn.savvyreading.com:uwj5m68fdrlr8bj3 `
+2. `wget -qO- https://ubuntu.bigbluebutton.org/bbb-install.sh | bash -s -- -v xenial-22 -s lms.savvyreading.com -e jeremy.parra@savvyreading.com -g -c turn.savvyreading.com: <turn_secret>`
 
 
 ## Update Existing Installation 
