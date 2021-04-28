@@ -376,7 +376,17 @@ Resources:
             x=$(( $x + 1 ))
           done
 
+          # custom bbb config
+          aws s3 cp s3://${BBBStackBucketStack}/savvy-apply-config.sh /etc/bigbluebutton/bbb-conf/apply-config.sh
+          chmod +x /etc/bigbluebutton/bbb-conf/apply-config.sh
+
           wget -qO- https://ubuntu.bigbluebutton.org/bbb-install.sh | bash -s -- -v ${BBBApplicationVersion} -s $instance_fqdn -e ${BBBOperatorEMail} -c $turn_fqdn:$turnsecret
+
+          # Properties
+          aws s3 cp s3://${BBBStackBucketStack}/bigbluebutton.properties /usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
+
+          # default media
+          aws s3 cp s3://${BBBStackBucketStack}/SavvyReading_BBBdefault.pdf /usr/share/bigbluebutton/blank/blank-presentation.pdf
 
           # Customize BBB instance for savvy
           sed -i.bak '/chat:/,/enabled:/ s/true/false/'  /usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml
