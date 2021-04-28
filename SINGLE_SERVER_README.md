@@ -5,7 +5,6 @@
 
 ## Update Existing Installation 
 1. `sudo -i`
-2. 
 3. Get <Secret> 
 `bbb-conf --secret`
 
