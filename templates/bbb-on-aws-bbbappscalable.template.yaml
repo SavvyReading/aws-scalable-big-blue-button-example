@@ -389,6 +389,7 @@ Resources:
           aws s3 cp s3://${BBBStackBucketStack}/SavvyReading_BBBdefault.pdf /usr/share/bigbluebutton/blank/blank-presentation.pdf
 
           # Customize BBB instance for savvy
+          yq w -i /usr/local/bigbluebutton/core/scripts/presentation.yml 'video_formats[0]' 'mp4'
           sed -i.bak '/chat:/,/enabled:/ s/true/false/'  /usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml
           bbb-conf --restart
           sleep 2m
