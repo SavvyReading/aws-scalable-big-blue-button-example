@@ -15,6 +15,7 @@ yq w -i $HTML5_CONFIG public.kurento.skipVideoPreview false
 
 # low
 yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[6].default true
+yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[6].name "Standard"
 # medium
 yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].hidden true
 yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].default false
@@ -24,11 +25,11 @@ yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[8].hidden true
 yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[9].hidden true
 
 # delete thickness 14,12,10,8,6
-yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
-yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
-yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
-yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
-yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
+# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
+# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
+# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
+# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
+# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
 
 
 yq d -i $HTML5_CONFIG public.whiteboard.toolbar.multiUserTools
