@@ -12,7 +12,7 @@ Parameters:
   BBBApplicationVersion:
     Description: Database engine version for Aurora PostgreSQL
     Type: String
-    Default: xenial-22
+    Default: bionic-230
   BBBOperatorEMail:
     Description: E-Mail address to notify if there are any operational issues
     Type: String
@@ -199,6 +199,7 @@ Resources:
   BBBApplicationEC2Role:
     Type: AWS::IAM::Role
     Properties:
+      RoleName: BBBApplicationEC2Role
       AssumeRolePolicyDocument:
         Statement:
           - Effect: Allow
@@ -296,17 +297,17 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
-          apt update -y 
-          
+          apt update -y
+
           while fuser /var/{lib/{dpkg,apt/lists},cache/apt/archives}/lock >/dev/null 2>&1; do sleep 1; done
 
           DEBIAN_FRONTEND='noninteractive' apt -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' full-upgrade
 
           apt autoremove -y
           apt autoclean
-           
+
           while fuser /var/{lib/{dpkg,apt/lists},cache/apt/archives}/lock >/dev/null 2>&1; do sleep 1; done
-          
+
           apt install -y git binutils python3-pip python-pip build-essential python-dev python-setuptools jq
 
           pip install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
@@ -341,7 +342,7 @@ Resources:
           systemctl start route53-handler
 
           mkdir -p /mnt/bbb-recordings
-          echo "${BBBSharedStorageFS}: /mnt/bbb-recordings efs defaults,tls,accesspoint=${BBBSharedStorageAPspool},rw 0 0" >> /etc/fstab
+          echo "${BBBSharedStorageFS}: /mnt/bbb-recordings efs defaults,tls,iam,accesspoint=${BBBSharedStorageAPspool},rw 0 0" >> /etc/fstab
 
           mkdir -p /var/bigbluebutton
 
@@ -361,7 +362,6 @@ Resources:
 
           echo "$UUID       /var/bigbluebutton   ext4    defaults,nofail        0       2" >> /etc/fstab
           mount -a
-
 
           turn_hostname=$(aws ssm get-parameter --region ${AWS::Region} --name "${BBBTurnHostnameParameter}" --with-decryption --output text --query Parameter.Value)
           turn_fqdn=$turn_hostname.${BBBDomainName}
@@ -386,7 +386,7 @@ Resources:
           aws s3 cp s3://${BBBStackBucketStack}/bigbluebutton.properties /usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
 
           # default media
-          aws s3 cp s3://${BBBStackBucketStack}/SavvyReading_BBBdefault.pdf /usr/share/bigbluebutton/blank/blank-presentation.pdf
+          aws s3 cp s3://${BBBStackBucketStack}/SavvyReading_BBBdefault.pdf /var/www/bigbluebutton-default/default.pdf
 
           # Customize BBB instance for savvy
           yq w -i /usr/local/bigbluebutton/core/scripts/presentation.yml 'video_formats[0]' 'mp4'
@@ -406,8 +406,8 @@ Resources:
           aws s3 cp s3://${BBBStackBucketStack}/scalelite-handler.sh /usr/local/bin/scalelite-handler.sh
           chmod +x /usr/local/bin/scalelite-handler.sh
 
-          SERVER="$(bbb-conf --secret | head -3 | tail -1 | sed -r 's/.*URL: //g')api"
-          SECRET=$(bbb-conf --secret | head -4 | tail -1 | sed -r 's/.*Secret: //g')
+          SERVER="$(bbb-conf --secret | head -2 | tail -1 | sed -r 's/.*URL: //g')api"
+          SECRET=$(bbb-conf --secret | head -3 | tail -1 | sed -r 's/.*Secret: //g')
 
           sed -i "s/SECRET_PLACEHOLDER/$SECRET/g" /etc/systemd/system/scalelite-handler.service
           sed -i "s|SERVER_PLACEHOLDER|$SERVER|g" /etc/systemd/system/scalelite-handler.service

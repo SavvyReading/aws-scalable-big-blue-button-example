@@ -9,8 +9,8 @@ Description: >
   Author: David Surey <suredavi@amazon.com>, Bastian Klein <basklein@amazon.com>
 
 Parameters:
-  BBBTurnInstanceOSVersion: 
-    Description: Ubuntu Version to be deployed for Turn Instances 
+  BBBTurnInstanceOSVersion:
+    Description: Ubuntu Version to be deployed for Turn Instances
     Default: focal-20.04
     Type: String
     AllowedValues:
@@ -125,14 +125,14 @@ Resources:
       Description: SSM Parameter for the variable part of the Application Server Ubuntu AMI
 
 Outputs:
-  BBBGetLatestAMILambdaRole: 
+  BBBGetLatestAMILambdaRole:
     Description: Role for the Lambda to search for Image AMIs
     Value: !Ref BBBGetLatestAMILambdaRole
-  BBBGetLatestAMI: 
+  BBBGetLatestAMI:
     Description: Function to search for Image AMIs dynamically
     Value: !Ref BBBGetLatestAMI
   BBBTurnAMIParameter:
-    Description: Parameter for the Turn AMI 
+    Description: Parameter for the Turn AMI
     Value: !Ref BBBTurnAMIParameter
   BBBApplicationAMIParameter:
     Description: Parameter for the Application AMI
