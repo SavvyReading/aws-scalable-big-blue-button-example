@@ -421,7 +421,14 @@ Resources:
           systemctl enable scalelite-handler
           systemctl start scalelite-handler
 
-                    # Install Docker Compose
+          # install webhooks
+          apt-get update
+          apt-get install bbb-webhooks
+          yq w -i /usr/local/bigbluebutton/bbb-webhooks/config/default.yml 'hooks.permanentURLs[0].url' 'https://f0231b58c8d1.ngrok.io/lms/webhook/'
+          yq w -i /usr/local/bigbluebutton/bbb-webhooks/config/default.yml 'hooks.permanentURLs[0].getRaw' 'false'
+          service bbb-webhooks restart
+
+          # Install Docker Compose
           apt-get update
           apt-get --yes --force-yes install \
               apt-transport-https \
