@@ -230,6 +230,11 @@ Resources:
                   - !Sub "arn:aws:s3:::${BBBStackBucketStack}/*"
               - Effect: Allow
                 Action:
+                  - s3:PutObject
+                Resource:
+                  - !Sub "arn:aws:s3:::playback-dev.savvyreading.com/*"
+              - Effect: Allow
+                Action:
                   - ecs:ListTaskDefinitions
                   - ecs:ListClusters
                 Resource:
@@ -388,6 +393,23 @@ Resources:
           # default media
           aws s3 cp s3://${BBBStackBucketStack}/SavvyReading_BBBdefault.pdf /var/www/bigbluebutton-default/default.pdf
 
+          aws s3 cp s3://${BBBStackBucketStack}/stun.xml /usr/share/bbb-web/WEB-INF/classes/spring/turn-stun-servers.xml
+          aws s3 cp s3://${BBBStackBucketStack}/savvyreading_favicon.ico /var/www/bigbluebutton-default/favicon.ico
+          aws s3 cp s3://${BBBStackBucketStack}/index.html /var/www/bigbluebutton-default/index.html
+          aws s3 cp s3://${BBBStackBucketStack}/conference.conf.xml /opt/freeswitch/conf/autoload_configs/conference.conf.xml
+
+          # scripts
+          mkdir /home/ubuntu/scale
+          aws s3 cp s3://${BBBStackBucketStack}/pushs3.sh /home/ubuntu/scale/pushs3.sh
+          chmod a+x /home/ubuntu/scale/pushs3.sh
+          aws s3 cp s3://${BBBStackBucketStack}/post_publish.rb /usr/local/bigbluebutton/core/scripts/post_publish/pushs3.rb
+          chmod a+x /usr/local/bigbluebutton/core/scripts/post_publish/pushs3.rb
+
+          aws s3 cp s3://${BBBStackBucketStack}/events.sh /home/ubuntu/scale/events.sh
+          chmod a+x /home/ubuntu/scale/events.sh
+          aws s3 cp s3://${BBBStackBucketStack}/post_events.rb /usr/local/bigbluebutton/core/scripts/post_events/post_events.rb
+          chmod a+x /usr/local/bigbluebutton/core/scripts/post_events/post_events.rb
+
           # Customize BBB instance for savvy
           yq w -i /usr/local/bigbluebutton/core/scripts/presentation.yml 'video_formats[0]' 'mp4'
           sed -i.bak '/chat:/,/enabled:/ s/true/false/'  /usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml
@@ -424,8 +446,13 @@ Resources:
           # install webhooks
           apt-get update
           apt-get install bbb-webhooks
-          yq w -i /usr/local/bigbluebutton/bbb-webhooks/config/default.yml 'hooks.permanentURLs[0].url' 'https://f0231b58c8d1.ngrok.io/lms/webhook/'
+          # TODO: replace with production endpoint when testing ended
+          yq d -i /usr/local/bigbluebutton/bbb-webhooks/config/default.yml 'hooks.permanentURLs'
+          yq w -i /usr/local/bigbluebutton/bbb-webhooks/config/default.yml 'hooks.permanentURLs[0].url' 'https://ab9f7a6be930.ngrok.io/lms/webhook/'
           yq w -i /usr/local/bigbluebutton/bbb-webhooks/config/default.yml 'hooks.permanentURLs[0].getRaw' 'false'
+
+          yq w -i /usr/local/bigbluebutton/bbb-webhooks/config/default.yml 'hooks.permanentURLs[1].url' 'https://stage-reader.savvyreading.com/lms/webhook/'
+          yq w -i /usr/local/bigbluebutton/bbb-webhooks/config/default.yml 'hooks.permanentURLs[1].getRaw' 'false'
           service bbb-webhooks restart
 
           # Install Docker Compose

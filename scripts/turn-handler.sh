@@ -3,6 +3,9 @@
 # created by suredavi@amazon.de
 # only for testing
 
+# disable, we use turn servers in Google Cloud
+exit 0
+
 while getopts ":r:p:" opt; do
   case $opt in
     r) REGION="$OPTARG"
