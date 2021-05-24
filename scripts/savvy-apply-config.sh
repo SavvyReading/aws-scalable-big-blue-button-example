@@ -13,16 +13,16 @@ yq w -i $HTML5_CONFIG public.app.customHeartbeat true
 
 yq w -i $HTML5_CONFIG public.kurento.skipVideoPreview false
 
-# low
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[6].hidden true
-# medium
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].name "Standard"
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].default true
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].bitrate 100
-# high
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[8].hidden true
-# hd
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[9].hidden true
+yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==medium).bitrate' 100
+
+yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==low).default' false
+yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==medium).default' true
+yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==high).default' false
+yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==hd).default' false
+
+yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==low).hidden' true
+yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==high).hidden' true
+yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==hd).hidden' true
 
 # delete thickness 14,12,10,8,6
 # yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
