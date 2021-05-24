@@ -410,6 +410,9 @@ Resources:
           aws s3 cp s3://${BBBStackBucketStack}/post_events.rb /usr/local/bigbluebutton/core/scripts/post_events/post_events.rb
           chmod a+x /usr/local/bigbluebutton/core/scripts/post_events/post_events.rb
 
+          aws s3 cp s3://${BBBStackBucketStack}/bbb-recording-cleanup /etc/cron.daily/bbb-recording-cleanup
+          chmod +x /etc/cron.daily/bbb-recording-cleanup
+
           # Customize BBB instance for savvy
           yq w -i /usr/local/bigbluebutton/core/scripts/presentation.yml 'video_formats[0]' 'mp4'
           sed -i.bak '/chat:/,/enabled:/ s/true/false/'  /usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml
