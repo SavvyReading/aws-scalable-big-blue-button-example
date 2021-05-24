@@ -14,11 +14,11 @@ yq w -i $HTML5_CONFIG public.app.customHeartbeat true
 yq w -i $HTML5_CONFIG public.kurento.skipVideoPreview false
 
 # low
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[6].default true
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[6].name "Standard"
+yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[6].hidden true
 # medium
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].hidden true
-yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].default false
+yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].name "Standard"
+yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].default true
+yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[7].bitrate 100
 # high
 yq w -i $HTML5_CONFIG public.kurento.cameraProfiles[8].hidden true
 # hd
