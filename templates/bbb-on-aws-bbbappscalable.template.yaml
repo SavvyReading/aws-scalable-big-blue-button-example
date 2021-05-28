@@ -231,8 +231,10 @@ Resources:
               - Effect: Allow
                 Action:
                   - s3:PutObject
+                  - s3:ListBucket
                 Resource:
                   - !Sub "arn:aws:s3:::playback-dev.savvyreading.com/*"
+                  - !Sub "arn:aws:s3:::playback-dev.savvyreading.com"
               - Effect: Allow
                 Action:
                   - ecs:ListTaskDefinitions
@@ -414,6 +416,21 @@ Resources:
           chmod a+x /home/ubuntu/scale/pushs3archive.sh
           aws s3 cp s3://${BBBStackBucketStack}/post_archive.rb /usr/local/bigbluebutton/core/scripts/post_archive/post_archive.rb
           chmod a+x /usr/local/bigbluebutton/core/scripts/post_archive/post_archive.rb
+
+          aws s3 cp s3://${BBBStackBucketStack}/s3ls.sh /home/ubuntu/scale/s3ls.sh
+          chmod a+x /home/ubuntu/scale/s3ls.sh
+
+          aws s3 cp s3://${BBBStackBucketStack}/delete-archives.sh /home/ubuntu/scale/delete-archives.sh
+          chmod a+x /home/ubuntu/scale/delete-archives.sh
+          aws s3 cp s3://${BBBStackBucketStack}/delete-events.sh /home/ubuntu/scale/delete-events.sh
+          chmod a+x /home/ubuntu/scale/delete-events.sh
+          aws s3 cp s3://${BBBStackBucketStack}/delete-recordings.sh /home/ubuntu/scale/delete-recordings.sh
+          chmod a+x /home/ubuntu/scale/delete-recordings.sh
+          aws s3 cp s3://${BBBStackBucketStack}/clean.sh /home/ubuntu/scale/clean.sh
+          chmod a+x /home/ubuntu/scale/clean.sh
+
+          aws s3 cp s3://${BBBStackBucketStack}/clean.sh /etc/cron.daily/bbb-general-cleanup
+          chmod a+x /etc/cron.daily/bbb-general-cleanup
 
           aws s3 cp s3://${BBBStackBucketStack}/bbb-recording-cleanup /etc/cron.daily/bbb-recording-cleanup
           chmod +x /etc/cron.daily/bbb-recording-cleanup
