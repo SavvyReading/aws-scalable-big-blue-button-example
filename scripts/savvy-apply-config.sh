@@ -24,13 +24,11 @@ yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==low).hidden' true
 yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==high).hidden' true
 yq w -i $HTML5_CONFIG 'public.kurento.cameraProfiles.(id==hd).hidden' true
 
-# delete thickness 14,12,10,8,6
-# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
-# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
-# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
-# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
-# yq d -i $HTML5_CONFIG public.whiteboard.toolbar.thickness[0]
-
+yq d -i $HTML5_CONFIG 'public.whiteboard.toolbar.thickness.(value==14)'
+yq d -i $HTML5_CONFIG 'public.whiteboard.toolbar.thickness.(value==12)'
+yq d -i $HTML5_CONFIG 'public.whiteboard.toolbar.thickness.(value==10)'
+yq d -i $HTML5_CONFIG 'public.whiteboard.toolbar.thickness.(value==8)'
+yq d -i $HTML5_CONFIG 'public.whiteboard.toolbar.thickness.(value==6)'
 
 yq d -i $HTML5_CONFIG public.whiteboard.toolbar.multiUserTools
 yq w -i $HTML5_CONFIG public.whiteboard.toolbar.multiUserTools[+] "text"
